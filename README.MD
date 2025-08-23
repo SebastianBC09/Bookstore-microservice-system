@@ -87,16 +87,16 @@ flowchart LR
 ```mermaid
 sequenceDiagram
   participant Client
-  participant OrdersAPI
-  participant BooksAPI
-  participant OrdersDB
+  participant OrdersAPI as Orders Service
+  participant BooksAPI as Books Service
+  participant DB as PostgreSQL (DB Compartida)
 
   Client->>OrdersAPI: POST /orders { bookId, quantity }
   OrdersAPI->>BooksAPI: GET /books/:id
   alt Libro encontrado
       BooksAPI-->>OrdersAPI: 200 OK + Book Data
-      OrdersAPI->>OrdersDB: INSERT Order
-      OrdersDB-->>OrdersAPI: Saved
+      OrdersAPI->>DB: INSERT INTO orders schema
+      DB-->>OrdersAPI: Saved
       OrdersAPI-->>Client: 201 Created (Order)
   else Libro no existe
       BooksAPI-->>OrdersAPI: 404 Not Found
