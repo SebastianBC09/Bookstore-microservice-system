@@ -68,7 +68,7 @@ flowchart LR
       OR[OrderRepository]
     end
 
-    subgraph DB[(PostgreSQL - Base de Datos Compartida)]
+    subgraph DB["PostgreSQL (bookstore)"]
       DBS1[(Schema: books)]
       DBS2[(Schema: orders)]
     end
@@ -77,6 +77,9 @@ flowchart LR
     UI -->|HTTP| OC
 
     OC -->|HTTP /books/:id| BC
+
+    BU --> BR
+    OU --> OR
 
     BR --> DBS1
     OR --> DBS2
@@ -89,7 +92,7 @@ sequenceDiagram
   participant Client
   participant OrdersAPI as Orders Service
   participant BooksAPI as Books Service
-  participant DB as PostgreSQL (DB Compartida)
+  participant DB as PostgreSQL (Bookstore)
 
   Client->>OrdersAPI: POST /orders { bookId, quantity }
   OrdersAPI->>BooksAPI: GET /books/:id
@@ -116,7 +119,7 @@ sequenceDiagram
 
 ## 🚀 Instalación & Ejecución
 
-1. Clona el repositorio junto a sus submódulos y entra al directorio:
+Clona el repositorio junto a sus submódulos y entra al directorio:
 
    ```bash
    git clone --recurse-submodules git@github.com:SebastianBC09/Bookstore-microservice-system.git
