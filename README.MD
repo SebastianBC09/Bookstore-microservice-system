@@ -10,7 +10,7 @@ Un sistema de microservicios simple para gestionar una librería, construido con
 ## 📑 Tabla de Contenidos
 - [📌 Descripción General](#-descripción-general)
 - [🏗️ Arquitectura del Sistema](#️-arquitectura-del-sistema)
-  - [ Estructura de los microservicios] (#-estructura-de-los-microservicios)
+  - [Estructura de los microservicios] (#-estructura-de-los-microservicios)
   - [Diagramas Mermaid] (#-diagramas-mermaid)
 - [🧰 Tecnologías](#-tecnologías)
 - [⚙️ Requisitos Previos](#-requisitos-previos)
@@ -60,14 +60,17 @@ flowchart LR
       BC[BookController]
       BU[UseCases]
       BR[BookRepository]
-      DB1[(Books DB)]
     end
 
     subgraph Orders[🛒 Orders Service]
       OC[OrderController]
       OU[UseCases]
       OR[OrderRepository]
-      DB2[(Orders DB)]
+    end
+
+    subgraph DB[(PostgreSQL - Base de Datos Compartida)]
+      DBS1[(Schema: books)]
+      DBS2[(Schema: orders)]
     end
 
     UI -->|HTTP| BC
@@ -75,8 +78,8 @@ flowchart LR
 
     OC -->|HTTP /books/:id| BC
 
-    BU --> BR --> DB1
-    OU --> OR --> DB2
+    BR --> DBS1
+    OR --> DBS2
 ```
 
 ### ⚙️ Flujo de creación de una orden
