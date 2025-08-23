@@ -1,0 +1,75 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+    command: ["postgres", "-c", "listen_addresses=*"]
+
+  books-service:
+    build: ./books-service
+    container_name: nest-books-service
+    env_file: .env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - PORT=3000
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=books
+      - ORDERS_SERVICE_URL=http://orders-service:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    command: >
+      sh -c "
+        echo 'Starting Books Service setup...' &&
+        npx prisma generate &&
+        echo 'Applying migrations...' &&
+        npx prisma migrate deploy &&
+        echo 'Starting application...' &&
+        npm run start:prod
+      "
+
+  orders-service:
+    build: ./orders-service
+    container_name: nest-orders-service
+    env_file: .env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - PORT=3001
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=orders
+      - BOOKS_SERVICE_URL=http://books-service:3000
+    ports:
+      - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    command: >
+      sh -c "
+        echo 'Starting Orders Service setup...' &&
+        npx prisma generate &&
+        echo 'Applying migrations...' &&
+        npx prisma migrate deploy &&
+        echo 'Starting application...' &&
+        npm run start:prod
+      "
+
+volumes:
+  db_data:
