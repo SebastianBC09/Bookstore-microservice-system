@@ -1,0 +1,6 @@
+[submodule "books-service"]
+	path = books-service
+	url = git@github.com:SebastianBC09/books-microservice.git
+[submodule "orders-service"]
+	path = orders-service
+	url = git@github.com:SebastianBC09/orders-microservice.git
