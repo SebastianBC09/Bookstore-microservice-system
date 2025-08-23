@@ -10,18 +10,16 @@ Un sistema de microservicios simple para gestionar una librería, construido con
 ## 📑 Tabla de Contenidos
 - [📌 Descripción General](#-descripción-general)
 - [🏗️ Arquitectura del Sistema](#️-arquitectura-del-sistema)
-  - [Estructura de los microservicios] (#-estructura-de-los-microservicios)
-  - [Diagramas Mermaid] (#-diagramas-mermaid)
-- [🧰 Tecnologías](#-tecnologías)
+  - [🌐 Diagrama de microservicios](#-diagrama-de-microservicios)
+  - [⚙️ Flujo de creación de una orden](#-flujo-de-creación-de-una-orden)
 - [⚙️ Requisitos Previos](#-requisitos-previos)
 - [🚀 Instalación & Ejecución](#-instalación--ejecución)
-  - [Docker Compose](#-docker-compose)
-  - [Ejecución local](#-ejecución-local)
-- [📦 Dependencias](#-dependencias)
+  - [🐳 Docker Compose](#-docker-compose)
+  - [💻 Ejecución local](#-ejecución-local)
 - [📝 Endpoints Principales](#-endpoints-principales)
 - [🛠️ Decisiones de Arquitectura](#-decisiones-de-arquitectura)
-- [Autor](#-autor)
-- [Licencia](#-licencia)
+- [👨‍💻 Autor](#-autor)
+- [📄 Licencia](#-licencia)
 
 ---
 
